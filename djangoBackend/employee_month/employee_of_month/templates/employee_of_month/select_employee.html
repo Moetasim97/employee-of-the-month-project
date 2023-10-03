@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Employee of the Month</title>
+</head>
+<body>
+    <h1>Select Employee of the Month</h1>
+    <p>Selected Employee: {{ selected_employee.user.username }}</p>
+    
+    <!-- You can use a form or a button to submit the selection -->
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Select</button>
+    </form>
+</body>
+</html>
