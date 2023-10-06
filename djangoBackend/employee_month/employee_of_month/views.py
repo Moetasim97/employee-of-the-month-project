@@ -1,7 +1,9 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 # from datetime import date
 from django.utils import timezone
 from .models import Employee
+import json
 
 
 def select_employee_of_the_month(selected_employee):
@@ -17,6 +19,11 @@ def select_employee_of_the_month(selected_employee):
         selected_employee.selected = True
         selected_employee.selected_month = current_month_year
         selected_employee.save()
+
+
+def return_employee(request,employee_id):
+    if request.method=="GET":
+        requested_employee = Employee.objects.get(pk=employee_id)
 
 def select_employee_view(request, employee_id):
     selected_employee = Employee.objects.get(pk=employee_id)
@@ -34,6 +41,15 @@ def select_employee_view(request, employee_id):
 
     # Render the template with the employee selection form
     return render(request, 'employee_of_month/select_employee.html', {'selected_employee': selected_employee})
+
+
+
+def select_winner(request):
+    if request.method == "GET":
+        winner = list(Employee.objects.filter(selected=True).values())[0]
+        return JsonResponse({'result':winner},status=200)
+
+        
 
 def admin_dashboard_view(request):
     # Add your logic here to render the admin dashboard page

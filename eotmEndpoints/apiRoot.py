@@ -11,7 +11,7 @@ def home():
 @app.get("/star_employee")
 def get_star_employee():
 
-    other_url="http://127.0.0.1:8001/current_oefm"
+    other_url="http://127.0.0.1:8000/retrieve_winner"
 
     with httpx.AsyncClient() as client:
         response = client.get(other_url)
