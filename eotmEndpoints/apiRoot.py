@@ -4,9 +4,28 @@ import httpx
 app = FastAPI(port=8001)
 
 
+
+dummy_user={"username":"halpert","password":"sharkllord"}
+
 @app.get('/')
 def home():
     return {"message":"Say hello to my little friend"}
+
+
+@app.get("/validate_user")
+async def get_user():
+    other_url = "http://127.0.0.1:8000/validate_user/"
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(other_url,json = dummy_user)
+
+        if response:
+            return response.json()
+        else:
+            return {"error": "Failed to validate this user's credentials"}
+
+
+
 
 @app.get("/star_employee")
 async def get_star_employee():
@@ -15,7 +34,7 @@ async def get_star_employee():
 
     async with httpx.AsyncClient() as client:
         response = httpx.get(other_url)
-        print(response.json())
+     
 
         if response:
             return response.json()
