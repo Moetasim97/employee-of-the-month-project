@@ -1,8 +1,10 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 # from datetime import date
+from django.db.models import Avg
 from django.utils import timezone
 from .models import Employee
+import math
 import json
 
 
@@ -43,11 +45,19 @@ def select_employee_view(request, employee_id):
     return render(request, 'employee_of_month/select_employee.html', {'selected_employee': selected_employee})
 
 
-
+# view for selecting the employee of the month
 def select_winner(request):
     if request.method == "GET":
-        winner = list(Employee.objects.filter(selected=True).values())[0]
-        return JsonResponse({'result':winner},status=200)
+        return JsonResponse(list(Employee.objects.filter(selected=True).values()),safe=False) 
+
+
+# view for returning the hall-of-famers
+def retrieve_hofs(request):
+    if request.method=="GET":
+        average_wins = Employee.objects.aggregate(Avg('counter'))
+        int_val = math.floor(average_wins['counter__avg'])
+        final_list = list(Employee.objects.filter(counter__gt = int_val).values())
+        return JsonResponse(final_list,safe=False)
 
         
 
