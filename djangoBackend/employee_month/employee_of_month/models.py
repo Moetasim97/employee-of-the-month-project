@@ -8,8 +8,6 @@ def get_image_upload_path(instance, filename):
 
 
 class EmployeeOfTheMonthManager(models.Manager):
-    def get_num_times_selected_for_month(self, employee):
-        return self.filter(employee=employee).count()
 
     def get_top_3_winners(self):
         return Employee.objects.all().order_by('-counter')[:3]
