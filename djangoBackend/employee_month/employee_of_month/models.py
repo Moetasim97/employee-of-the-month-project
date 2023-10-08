@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db import models
 import os
@@ -10,7 +11,7 @@ def get_image_upload_path(instance, filename):
 class EmployeeOfTheMonthManager(models.Manager):
 
     def get_top_3_winners(self):
-        return Employee.objects.all().order_by('-counter')[:3]
+        return Employee.objects.filter(counter__gt=0).order_by('-counter')[:3]
 
 
     def select_employee_of_the_month(self,selected_employee):
@@ -24,31 +25,43 @@ class EmployeeOfTheMonthManager(models.Manager):
             previous_employee_of_month.is_selected_for_month = False
             previous_employee_of_month.save()
             
-        #Increment the counter of the selected employee
-        selected_employee.counter += 1
-        selected_employee.save()
-
-        selected_employee_of_month = EmployeeOfTheMonth(
-            employee=selected_employee,
-            month=current_month_year,
-            is_selected_for_month=True
-        )
-        selected_employee_of_month.save()
         
+        print("Selected employee:",selected_employee)
+            
+        #Increment the counter of the selected employee
+        if isinstance(selected_employee, Employee):
+            selected_employee.counter += 1
+            selected_employee.save()
 
+            selected_employee_of_month = EmployeeOfTheMonth(
+                employee=selected_employee,
+                month=current_month_year,
+                is_selected_for_month=True
+            )
+            selected_employee_of_month.save()
+        else:
+            pass
 class Employee(models.Model):
-    name = models.CharField(max_length=255)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)  # Define the 'name' field
     photo = models.ImageField(upload_to=get_image_upload_path)
     phone = models.CharField(max_length=11)
     counter = models.PositiveIntegerField(default=0)
     job_title = models.CharField(max_length=255)
-    # is_selected = models.BooleanField(default=False)
-    
-    objects = EmployeeOfTheMonthManager()
 
-    def __str__(self) -> str:
+    objects = EmployeeOfTheMonthManager()
+    
+    def save(self, *args, **kwargs):
+        # Set the 'name' field to the first and last name of the associated User
+        if self.user:
+            self.name = f"{self.user.first_name} {self.user.last_name}"
+        super().save(*args, **kwargs)
+
+    def __str__(self):
         return self.name
 
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
 
 class EmployeeOfTheMonth(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE,related_name='employee_of_the_month')
@@ -60,4 +73,4 @@ class EmployeeOfTheMonth(models.Model):
 
     def __str__(self) -> str:
         month_name = calendar.month_name[self.month.month]
-        return f"{month_name} {self.month.year} - {self.employee.name}"
+        return f"{month_name} {self.month.year} - {self.employee.user.get_full_name()}"

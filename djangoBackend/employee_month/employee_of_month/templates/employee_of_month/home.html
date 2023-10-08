@@ -4,6 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            margin: auto;
+            text-align: center;
+        }
+        img {
+            height: 220px;
+            width: 220px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid;
+        }
+        .wall_of_fame_img{
+            height: 150px;
+            width: 150px;
+        }
+        ul{
+            list-style: None;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+
+    </style>
 </head>
 <body>
     <div class="container">
@@ -11,7 +35,7 @@
     
         {% if employee_of_the_month %}
             <div class="employee-of-the-month">
-                <img style="width: 250px;" src="{{ employee_of_the_month.employee.photo.url }}" alt="{{ employee_of_the_month.employee.name }}">
+                <img class="employee_month_img" src="{{ employee_of_the_month.employee.photo.url }}" alt="{{ employee_of_the_month.employee.name }}">
                 <h2>{{ employee_of_the_month.employee.name }}</h2>
                 <p>{{ employee_of_the_month.description }}</p>
             </div>
@@ -19,12 +43,12 @@
             <p>No Employee of the Month has been selected yet.</p>
         {% endif %}
     
-        <h1>Top 3 Winners</h1>
+        <h1>Hall of Fame</h1>
     
         <ul>
             {% for winner in top_3_winners %}
                 <li>
-                    <img src="{{winner.photo.url}}" alt="winner.name" style="height: 100px;">
+                    <img class="wall_of_fame_img" src="{{winner.photo.url}}" alt="winner.name">
                     <p>{{ winner.name }} ( {{winner.counter}} times)</p>
                 </li>
             {% endfor %}
