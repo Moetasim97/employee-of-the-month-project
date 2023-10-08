@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Employee of the Month</h1>
+    
+        {% if employee_of_the_month %}
+            <div class="employee-of-the-month">
+                <img style="width: 250px;" src="{{ employee_of_the_month.employee.photo.url }}" alt="{{ employee_of_the_month.employee.name }}">
+                <h2>{{ employee_of_the_month.employee.name }}</h2>
+                <p>{{ employee_of_the_month.description }}</p>
+            </div>
+        {% else %}
+            <p>No Employee of the Month has been selected yet.</p>
+        {% endif %}
+    
+        <h1>Top 3 Winners</h1>
+    
+        <ul>
+            {% for winner in top_3_winners %}
+                <li>
+                    <img src="{{winner.photo.url}}" alt="winner.name" style="height: 100px;">
+                    <p>{{ winner.name }} ( {{winner.counter}} times)</p>
+                </li>
+            {% endfor %}
+
+        </ul>
+    </div>
+</body>
+</html>
