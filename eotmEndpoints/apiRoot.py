@@ -56,7 +56,20 @@ async def edit_emp_profile(employee_data:EmployeeData):
             return response.json()
         else:
             return {"error": "Failed to edit employee data"}
+        
+@app.get("/get_employee/")
+async def get_employee_data(employee_id:int):
 
+    other_url ='http://127.0.0.1:8000/return_employee/'
+    async with httpx.AsyncClient() as client:
+        response = await client.get(other_url)
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return {"error":"Failed to get employee data"}
+
+    
 
 
 
@@ -68,8 +81,6 @@ async def get_star_employee():
 
     async with httpx.AsyncClient() as client:
         response = httpx.get(other_url)
-     
-
         if response:
             return response.json()
         else:
@@ -79,11 +90,10 @@ async def get_star_employee():
 
 @app.get('/current_eotm')
 async def getting_current_winner():
-    other_url = "http://127.0.0.1:8000/retrieve_winner"
+    other_url = "http://127.0.0.1:8000/retrieve_winner/"
     async with httpx.AsyncClient() as client:
         response = await client.get(other_url)
         if response.status_code == 200:
-            print(response.json)
             return response.json()
         else:
             return {"error":"Failed to retrieve the list"}
