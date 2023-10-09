@@ -12,9 +12,10 @@ class User(BaseModel):
     password :str
 
 class EmployeeData(BaseModel):
+    id:int | None = None
     name:str | None = None
     photo:str | None = None
-    phone : str | None = None
+    phone:str | None = None
 
 
 # class Car(BaseModel):
@@ -42,7 +43,20 @@ async def get_user(user:User):
         if response:
             return response.json()
         else:
-            raise HTTPException(status_code =404,detail=f"No user found with these credentials")
+            raise {"error":"Failed to validate the user"}
+
+@app.post("/edit_employee")
+async def edit_emp_profile(employee_data:EmployeeData):
+    employee_data=employee_data.dict()
+    other_url = "http://127.0.0.1:8000/edit_employee/"
+    async with httpx.AsyncClient() as client:
+        response = await client.post(other_url, json = employee_data)
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return {"error": "Failed to edit employee data"}
+
 
 
 

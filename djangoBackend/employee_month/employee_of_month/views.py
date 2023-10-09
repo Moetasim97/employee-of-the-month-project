@@ -31,6 +31,9 @@ def validate_user(request):
 def return_employee(request,employee_id):
     if request.method=="GET":
         requested_employee = Employee.objects.get(pk=employee_id)
+        requested_employee = model_to_dict(requested_employee)
+        requested_employee['photo'] = str(requested_employee['photo'])
+        return JsonResponse(requested_employee)
 
 
 
@@ -47,7 +50,10 @@ def retrieve_hofs(request):
         # int_val = math.floor(average_wins['counter__avg'])
         final_list = list(Employee.objects.get_top_3_winners().values())
         return JsonResponse(final_list,safe=False)
-    
+
+
+
+     
 @csrf_exempt
 def edit_employee(request):
      if request.method == "POST":
