@@ -39,23 +39,22 @@ def select_winner(request):
 # view for returning the hall-of-famers
 def retrieve_hofs(request):
     if request.method=="GET":
-        average_wins = Employee.objects.aggregate(Avg('counter'))
-        int_val = math.floor(average_wins['counter__avg'])
-        final_list = list(Employee.objects.filter(counter__gt = int_val).values())
+        # average_wins = Employee.objects.aggregate(Avg('counter'))
+        # int_val = math.floor(average_wins['counter__avg'])
+        final_list = list(Employee.objects.get_top_3_winners().values())
         return JsonResponse(final_list,safe=False)
 
 
 
 
 def home(request):
-    employee_of_the_month = EmployeeOfTheMonth.objects.filter(is_selected_for_month=True).first()
-    top_3_winners = Employee.objects.get_top_3_winners()
-    
+        if request.method == "GET":
+            employee_of_the_month = EmployeeOfTheMonth.objects.filter(is_selected_for_month=True).first()
+            top_3_winners = Employee.objects.get_top_3_winners()
+            context = {
+                'employee_of_the_month': employee_of_the_month,
+                'top_3_winners': top_3_winners,
+            }
 
-
-    context = {
-        'employee_of_the_month': employee_of_the_month,
-        'top_3_winners': top_3_winners,
-    }
-
-    return render(request, 'employee_of_month/home.html', context)
+            return render(request, 'employee_of_month/home.html', context)
+        

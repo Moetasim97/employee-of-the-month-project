@@ -68,9 +68,17 @@ class EmployeeOfTheMonth(models.Model):
     month = models.DateField()
     description = models.TextField(blank=True)
     is_selected_for_month = models.BooleanField(default=False)
+    likes = models.IntegerField(null=True)
+    
 
     objects = EmployeeOfTheMonthManager()
 
     def __str__(self) -> str:
         month_name = calendar.month_name[self.month.month]
         return f"{month_name} {self.month.year} - {self.employee.user.get_full_name()}"
+    
+
+class WinnerInteractions(models.Model):
+    current_winner = models.ForeignKey('EmployeeOfTheMonth',on_delete=models.CASCADE)
+    commenter = models.ForeignKey('Employee',on_delete=models.CASCADE)
+    comment = models.CharField(max_length=255)
