@@ -1,28 +1,44 @@
-from fastapi import FastAPI
+import json
+from fastapi import FastAPI, HTTPException, Request
 import httpx
-
+from pydantic import BaseModel
 app = FastAPI(port=8001)
 
 
 
-dummy_user={"username":"halpert","password":"sharkllord"}
+
+
+
+
+class User(BaseModel):
+    username :str
+    password :str
+
+
+# class Car(BaseModel):
+#     car_name: str | None = None
+
+
+
+dummy_user={"username":"moetasim","password":"1234"}
 
 @app.get('/')
 def home():
     return {"message":"Say hello to my little friend"}
 
 
-@app.get("/validate_user")
-async def get_user():
+@app.post("/validate_user")
+async def get_user(user:User):
+
     other_url = "http://127.0.0.1:8000/validate_user/"
-
+    
     async with httpx.AsyncClient() as client:
-        response = await client.post(other_url,json = dummy_user)
-
+        user = user.dict()
+        response = await client.post(other_url,json = user)
         if response:
             return response.json()
         else:
-            return {"error": "Failed to validate this user's credentials"}
+            raise HTTPException(status_code =404,detail=f"No user found with these credentials")
 
 
 

@@ -4,6 +4,7 @@ from django.db import models
 import os
 import calendar
 
+
 def get_image_upload_path(instance, filename):
     return os.path.join('employee_photos', str(instance.id), filename)
 
