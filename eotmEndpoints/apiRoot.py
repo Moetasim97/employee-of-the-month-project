@@ -7,12 +7,14 @@ app = FastAPI(port=8001)
 
 
 
-
-
-
 class User(BaseModel):
     username :str
     password :str
+
+class EmployeeData(BaseModel):
+    name:str | None = None
+    photo:str | None = None
+    phone : str | None = None
 
 
 # class Car(BaseModel):
@@ -20,20 +22,22 @@ class User(BaseModel):
 
 
 
-dummy_user={"username":"moetasim","password":"1234"}
+
 
 @app.get('/')
 def home():
     return {"message":"Say hello to my little friend"}
 
 
+
+
 @app.post("/validate_user")
 async def get_user(user:User):
-
+    user = user.dict()
     other_url = "http://127.0.0.1:8000/validate_user/"
     
     async with httpx.AsyncClient() as client:
-        user = user.dict()
+        
         response = await client.post(other_url,json = user)
         if response:
             return response.json()

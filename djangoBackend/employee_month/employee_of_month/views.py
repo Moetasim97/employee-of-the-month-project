@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.db.models import Avg
 from django.utils import timezone
+from django.forms.models import model_to_dict
 from .models import Employee,User,EmployeeOfTheMonth
 import math
 import json
@@ -15,7 +16,10 @@ def validate_user(request):
         user_data = json.loads(request.body.decode('utf-8'))
         target_user = User.objects.filter(username = user_data['username'])
         if target_user:
-            return JsonResponse(list(target_user.values('username','id'))[0],safe=False)
+            # if target_user.check_password(user_data['password']):
+                return JsonResponse(list(target_user.values('username','id'))[0],safe=False)
+            # else:
+            #     return JsonResponse({"message":"The password is invalid"})
         else:
             return JsonResponse({'message':'There is no user with this credentials'})
     else:
@@ -43,6 +47,30 @@ def retrieve_hofs(request):
         # int_val = math.floor(average_wins['counter__avg'])
         final_list = list(Employee.objects.get_top_3_winners().values())
         return JsonResponse(final_list,safe=False)
+    
+@csrf_exempt
+def edit_employee(request):
+     if request.method == "POST":
+          incoming_data = json.loads(request.body.decode('utf-8'))
+          employee = Employee.objects.get(id=incoming_data['id'])
+          if employee:
+               
+               if incoming_data['photo']:
+                    employee.photo = incoming_data['photo']
+               if incoming_data['name']:
+                    employee.name = incoming_data['name']
+               if incoming_data['phone']:
+                    employee.phone = incoming_data['phone']
+               employee.save()
+
+          after_employee = model_to_dict(employee)
+          after_employee['photo'] = str(after_employee['photo'])
+
+          digestible_struct =after_employee
+          return JsonResponse(digestible_struct)
+    
+
+               
 
 
 
