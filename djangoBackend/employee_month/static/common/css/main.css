@@ -1,0 +1,26 @@
+
+.submit-row input{
+    background-color: #28a745 !important;
+    border: 0;
+    border-radius: 3px;
+    padding: 0 15px;
+    color: white !important;
+}
+
+.deletelink-box a{
+    height: 100% !important;
+    color: white !important;
+}
+
+.submit-row input:hover{
+    background-color: #218838 !important;
+}
+
+.row ul{
+    list-style: none;
+    font-weight: 600;
+}
+
+/* #content{
+    background-color: red;
+} */

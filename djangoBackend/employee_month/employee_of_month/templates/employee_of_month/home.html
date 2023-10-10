@@ -49,7 +49,7 @@
             {% for winner in top_3_winners %}
                 <li>
                     <img class="wall_of_fame_img" src="{{winner.photo.url}}" alt="winner.name">
-                    <p>{{ winner.name }} ( {{winner.counter}} times)</p>
+                    <p>{{ winner.name }} ( {{winner.selection_counter}} times)</p>
                 </li>
             {% endfor %}
 

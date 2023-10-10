@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
+import environ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,14 +32,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'employee_of_month',
+    'admin_confirm',
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders'
+    'corsheaders',
+    'employee_of_month',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +59,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'employee_month.urls'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-]                      
+]
 
 TEMPLATES = [
     {
@@ -77,10 +80,36 @@ TEMPLATES = [
 WSGI_APPLICATION = 'employee_month.wsgi.application'
 
 
+JAZZMIN_SETTINGS = {
+    "site_title": "Admin Panel",
+    "site_header": "Admin Panel",
+    "site_brand": "Admin Panel",
+    "index_title": "Dashboard",
+    "welcome_sign": "Welcome to the Employee Admin Panel",
+    "search_model": ["auth.User"],
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"model": "auth.User"},
+    ],
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-users",
+        "employee_of_month.employeeofthemonth": "fas fa-award",
+        "employee_of_month.employee": "fas fa-users",
+    },
+    "custom_js":"common/js/main.js",
+    "custom_css":"common/css/main.css",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    # "theme": "darkly",
+
+}
+
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-import environ
 
 env = environ.Env()
 environ.Env.read_env()
@@ -89,15 +118,14 @@ environ.Env.read_env()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env("DB_NAME"), 
+        'NAME': env("DB_NAME"),
         'USER': env("DB_USER"),
         'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"), 
+        'HOST': env("DB_HOST"),
         'PORT': '',
-        'ATOMIC_REQUESTS':True,
+        'ATOMIC_REQUESTS': True,
     }
 }
-
 
 
 # Password validation
@@ -133,9 +161,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-import os
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
 
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),
@@ -148,3 +177,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+ADMIN_CONFIRM_TEMPLATE = 'employee_month/templates/admin/confirm_action.html'

@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+# from admin_confirm.views import AdminConfirmView
+
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
-    path('',include('employee_of_month.urls'))
+    path('',include('employee_of_month.urls')),
 ]
 
 if settings.DEBUG:
