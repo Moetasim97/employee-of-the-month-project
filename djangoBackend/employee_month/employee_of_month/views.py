@@ -28,12 +28,18 @@ def validate_user(request):
 
 
 
-def return_employee(request,employee_id):
+def return_employee(request,user_id):
     if request.method=="GET":
-        requested_employee = Employee.objects.get(pk=employee_id)
-        requested_employee = model_to_dict(requested_employee)
-        requested_employee['photo'] = str(requested_employee['photo'])
-        return JsonResponse(requested_employee)
+        try:
+            requested_employee = Employee.objects.get(user_id=user_id)
+        except:
+             requested_employee = None
+        if requested_employee:
+            requested_employee = model_to_dict(requested_employee)
+            requested_employee['photo'] = str(requested_employee['photo'])
+            return JsonResponse(requested_employee)
+        else:
+             return JsonResponse({"message":"This is not an employee"})
 
 
 
@@ -58,7 +64,7 @@ def retrieve_hofs(request):
 def edit_employee(request):
      if request.method == "POST":
           incoming_data = json.loads(request.body.decode('utf-8'))
-          employee = Employee.objects.get(user_id=incoming_data['id'])
+          employee = Employee.objects.get(employee_id=incoming_data['id'])
           if employee:
                
                if incoming_data['photo']:
@@ -72,8 +78,9 @@ def edit_employee(request):
           after_employee = model_to_dict(employee)
           after_employee['photo'] = str(after_employee['photo'])
 
-          digestible_struct =after_employee
+          digestible_struct = after_employee
           return JsonResponse(digestible_struct)
+         
     
 
                

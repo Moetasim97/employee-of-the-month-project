@@ -67,7 +67,7 @@ async def get_employee_data(employee_id:int):
         if response.status_code == 200:
             return response.json()
         else:
-            return {"error":"Failed to get employee data"}
+            return print(response)
 
     
 
