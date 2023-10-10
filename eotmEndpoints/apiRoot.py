@@ -2,9 +2,15 @@ import json
 from fastapi import FastAPI, HTTPException, Request
 import httpx
 from io_pydantic_models import *
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(port=8001)
 
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000/"],  # You can specify a list of allowed origins or use "*" for any origin.
+    allow_credentials=True,  
+ 
+)
 
 
 
