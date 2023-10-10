@@ -73,7 +73,7 @@ async def getting_employee_data(employee_id:int):
     
 
 
-@app.get('/current_eotm')
+@app.get('/current_eotm',response_model=Employee_of_the_month_output)
 async def getting_current_winner():
     other_url = "http://127.0.0.1:8000/retrieve_winner/"
     async with httpx.AsyncClient() as client:
@@ -95,7 +95,7 @@ async def submitting_current_interaction(interaction_data:InteractionData):
         else:
             return {"error":"Failed to submit new interactions with the eotm post."}
         
-@app.put("/reset_password")
+@app.put("/reset_password",response_model=User_Validation_Output)
 async def resetting_password(new_user_data:User):
     other_url = "http://127.0.0.1:8000/reset_pass/"
     new_user_data = new_user_data.dict()

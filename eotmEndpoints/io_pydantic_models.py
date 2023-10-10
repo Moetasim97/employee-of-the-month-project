@@ -27,3 +27,15 @@ class InteractionData(BaseModel):
     employee_id: int
     comment: str | None = None
     likes: bool | None = None
+
+class Employee_of_the_month_output(BaseModel):
+    id:int
+    employee_id:int
+    month:str
+    description:str
+    is_selected_for_month:bool
+    likes:int
+    photo:str
+    name:str
+
+
