@@ -38,4 +38,7 @@ class Employee_of_the_month_output(BaseModel):
     photo:str
     name:str
 
+class ReturnedInteractions(BaseModel):
+    comments:list[dict]
+    likes:int
 

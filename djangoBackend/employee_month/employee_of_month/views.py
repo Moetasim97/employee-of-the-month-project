@@ -116,9 +116,10 @@ def record_interaction(request):
         if request_body['likes']:
                 current_eotm.likes = current_eotm.likes+1
                 current_eotm.save()
-                total_likes = model_to_dict(current_eotm)['likes']
+                total_likes = {"likes":model_to_dict(current_eotm)['likes']}
         else:
-            total_likes = model_to_dict(current_eotm)['likes']
+            total_likes = {"likes":model_to_dict(current_eotm)['likes']}
+            
             # return JsonResponse({"likes":total_likes})
         if serialzed_comments and total_likes:
                 serialzed_comments.append(total_likes)
