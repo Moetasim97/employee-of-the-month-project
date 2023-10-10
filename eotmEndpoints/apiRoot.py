@@ -1,30 +1,10 @@
 import json
 from fastapi import FastAPI, HTTPException, Request
 import httpx
-from pydantic import BaseModel
+from io_pydantic_models import *
 app = FastAPI(port=8001)
 
 
-
-
-class User(BaseModel):
-    username :str
-    password :str
-
-class EmployeeData(BaseModel):
-    id:int | None = None
-    name:str | None = None
-    photo:str | None = None
-    phone:str | None = None
-
-class InteractionData(BaseModel):
-    employee_id: int
-    comment: str
-    like: bool
-
-
-# class Car(BaseModel):
-#     car_name: str | None = None
 
 
 
@@ -37,8 +17,8 @@ def home():
 
 
 
-@app.post("/validate_user")
-async def get_user(user:User):
+@app.post("/validate_user",response_model=User_Validation_Output)
+async def getting_user(user:User) :
     user = user.dict()
     other_url = "http://127.0.0.1:8000/validate_user/"
     
@@ -50,8 +30,8 @@ async def get_user(user:User):
         else:
             return {"error":"Failed to validate the user"}
 
-@app.post("/edit_employee")
-async def edit_emp_profile(employee_data:EmployeeData):
+@app.post("/edit_employee",response_model=EmployeeDataOutput)
+async def editing_emp_profile(employee_data:EmployeeData):
     employee_data=employee_data.dict()
     other_url = "http://127.0.0.1:8000/edit_employee/"
     async with httpx.AsyncClient() as client:
@@ -62,8 +42,8 @@ async def edit_emp_profile(employee_data:EmployeeData):
         else:
             return {"error": "Failed to edit employee data"}
         
-@app.get("/get_employee/{employee_id}")
-async def get_employee_data(employee_id:int):
+@app.get("/get_employee/{employee_id}",response_model=EmployeeDataOutput)
+async def getting_employee_data(employee_id:int):
 
     # other_url ='http://127.0.0.1:8000/return_employee/'
     async with httpx.AsyncClient() as client:
@@ -103,20 +83,11 @@ async def getting_current_winner():
         else:
             return {"error":"Failed to retrieve the winner"}
 
-@app.get('/all_stars')
-async def getting_hall_of_famers():
-    other_url = "http://127.0.0.1:8000/all_time_winners/"  
-    async with httpx.AsyncClient() as client:    
-        response = await client.get(other_url)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return {"error":"Failed to retrieve hall of famers"}
 
 @app.post("/submit_interaction")
-async def submit_current_interaction(interaction_data:dict):
+async def submitting_current_interaction(interaction_data:InteractionData):
     other_url = "http://127.0.0.1:8000/update_eotm_interactions/"
-    
+    interaction_data=interaction_data.dict()
     async with httpx.AsyncClient() as client:
         response = await client.post(other_url, json = interaction_data)
         if response.status_code == 200:
@@ -125,9 +96,9 @@ async def submit_current_interaction(interaction_data:dict):
             return {"error":"Failed to submit new interactions with the eotm post."}
         
 @app.put("/reset_password")
-async def resetting_password(new_user_data:dict):
+async def resetting_password(new_user_data:User):
     other_url = "http://127.0.0.1:8000/reset_pass/"
-
+    new_user_data = new_user_data.dict()
     async with httpx.AsyncClient() as client:
         response = await client.put(other_url,json=new_user_data)
         if response.status_code==200:
