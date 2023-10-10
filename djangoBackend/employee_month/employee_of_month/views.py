@@ -22,7 +22,7 @@ def validate_user(request):
         if target_user:
             if check_password(user_data['password'],target_user.password):
                 return JsonResponse({"username":target_user.username,"id":target_user.id})
-                return JsonResponse(list(target_user.values('username','id'))[0],safe=False)
+             
             else:
                 return JsonResponse({"message":"The password is invalid"})
         else:
