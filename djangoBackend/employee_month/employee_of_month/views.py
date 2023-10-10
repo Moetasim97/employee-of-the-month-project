@@ -7,6 +7,7 @@ from .models import Employee,User,EmployeeOfTheMonth,WinnerInteractions
 import math
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.hashers import check_password
 
 
 # view that handles the login functionality
@@ -15,14 +16,15 @@ def validate_user(request):
     if request.method == "POST":
         user_data = json.loads(request.body.decode('utf-8'))
         try:
-            target_user = User.objects.filter(username = user_data['username'])
+            target_user = User.objects.get(username = user_data['username'])
         except:
              target_user = None
         if target_user:
-            # if target_user.check_password(user_data['password']):
+            if check_password(user_data['password'],target_user.password):
+                return JsonResponse({"username":target_user.username,"id":target_user.id})
                 return JsonResponse(list(target_user.values('username','id'))[0],safe=False)
-            # else:
-            #     return JsonResponse({"message":"The password is invalid"})
+            else:
+                return JsonResponse({"message":"The password is invalid"})
         else:
             return JsonResponse({'message':'There is no user with this credentials'})
     else:
@@ -118,6 +120,10 @@ def record_interaction(request):
                 return JsonResponse(serialzed_comments,safe=False)
         elif total_likes:
                 return JsonResponse({'likes':total_likes})
+        
+@csrf_exempt
+def resetting_password(request):
+     pass
             
                
                  

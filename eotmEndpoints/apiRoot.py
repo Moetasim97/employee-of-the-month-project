@@ -45,10 +45,10 @@ async def get_user(user:User):
     async with httpx.AsyncClient() as client:
         
         response = await client.post(other_url,json = user)
-        if response:
+        if response.status_code==200:
             return response.json()
         else:
-            raise {"error":"Failed to validate the user"}
+            return {"error":"Failed to validate the user"}
 
 @app.post("/edit_employee")
 async def edit_emp_profile(employee_data:EmployeeData):
