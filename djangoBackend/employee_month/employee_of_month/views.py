@@ -58,7 +58,7 @@ def retrieve_hofs(request):
 def edit_employee(request):
      if request.method == "POST":
           incoming_data = json.loads(request.body.decode('utf-8'))
-          employee = Employee.objects.get(id=incoming_data['id'])
+          employee = Employee.objects.get(user_id=incoming_data['id'])
           if employee:
                
                if incoming_data['photo']:

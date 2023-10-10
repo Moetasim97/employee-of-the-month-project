@@ -74,17 +74,17 @@ async def get_employee_data(employee_id:int):
 
 
 
-@app.get("/star_employee")
-async def get_star_employee():
+# @app.get("/star_employee")
+# async def get_star_employee():
 
-    other_url="http://127.0.0.1:8000/retrieve_winner/"
+#     other_url="http://127.0.0.1:8000/retrieve_winner/"
 
-    async with httpx.AsyncClient() as client:
-        response = httpx.get(other_url)
-        if response:
-            return response.json()
-        else:
-            return {"error": "Failed to retrieve the current employee"}
+#     async with httpx.AsyncClient() as client:
+#         response = httpx.get(other_url)
+#         if response:
+#             return response.json()
+#         else:
+#             return {"error": "Failed to retrieve the current employee"}
     
 
 
@@ -96,7 +96,7 @@ async def getting_current_winner():
         if response.status_code == 200:
             return response.json()
         else:
-            return {"error":"Failed to retrieve the list"}
+            return {"error":"Failed to retrieve the winner"}
 
 @app.get('/all_stars')
 async def getting_hall_of_famers():
