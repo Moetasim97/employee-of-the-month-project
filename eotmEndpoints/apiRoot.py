@@ -19,7 +19,6 @@ class EmployeeData(BaseModel):
 
 class InteractionData(BaseModel):
     employee_id: int
-    winner_id: int
     comment: str
     like: bool
 
@@ -112,7 +111,21 @@ async def getting_hall_of_famers():
         if response.status_code == 200:
             return response.json()
         else:
-            return {"error":"Failed to retrieve hall of famers"}  
+            return {"error":"Failed to retrieve hall of famers"}
+
+@app.post("/submit_interaction")
+async def submit_current_interaction(interaction_data:dict):
+    other_url = "http://127.0.0.1:8000/update_eotm_interactions/"
+    
+    async with httpx.AsyncClient() as client:
+        response = await client.post(other_url, json = interaction_data)
+        if response.status_code==200:
+            return response.json()
+        else:
+            return {"error":"Failed to submit new interactions with the eotm post."}
+
+        
+
 
 if __name__ == "__main__":
     import uvicorn

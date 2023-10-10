@@ -65,7 +65,7 @@ def retrieve_hofs(request):
      
 @csrf_exempt
 def edit_employee(request):
-     if request.method == "PUT":
+     if request.method == "POST":
           incoming_data = json.loads(request.body.decode('utf-8'))
           employee = Employee.objects.get(employee_id=incoming_data['id'])
           if employee:
