@@ -84,7 +84,7 @@ async def getting_current_winner():
             return {"error":"Failed to retrieve the winner"}
 
 
-@app.post("/submit_interaction")
+@app.post("/submit_interaction",response_model=ReturnedInteractions)
 async def submitting_current_interaction(interaction_data:InteractionData):
     other_url = "http://127.0.0.1:8000/update_eotm_interactions/"
     interaction_data=interaction_data.dict()
