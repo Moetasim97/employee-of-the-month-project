@@ -51,7 +51,14 @@ def return_employee(request,user_id):
 # view for selecting the employee of the month
 def select_winner(request):
     if request.method == "GET":
-        return JsonResponse(list(EmployeeOfTheMonth.objects.filter(is_selected_for_month=True).values()),safe=False) 
+        eotm_data = list(EmployeeOfTheMonth.objects.filter(is_selected_for_month=True).values())[0]
+        
+        employee_data = model_to_dict(Employee.objects.get(id=eotm_data['employee_id']))
+        extracted_dict=dict()
+        extracted_dict["photo"]=str(employee_data['photo'])
+        extracted_dict['name']=employee_data['name']
+        eotm_data.update(extracted_dict)
+        return JsonResponse(eotm_data,safe=False)
 
 
 # view for returning the hall-of-famers
