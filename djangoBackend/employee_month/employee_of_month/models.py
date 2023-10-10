@@ -54,17 +54,8 @@ class Employee(models.Model):
 
     objects = EmployeeOfTheMonthManager()
     
-    # def save(self, *args, **kwargs):
-    #     # Set the 'name' field to the first and last name of the associated User
-    #     if self.user:
-    #         self.name = f"{self.user.first_name} {self.user.last_name}"
-    #     super().save(*args, **kwargs)
-
     def __str__(self):
         return self.name
-
-    def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name}"
 
 class EmployeeOfTheMonth(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE,related_name='employee_of_the_month')

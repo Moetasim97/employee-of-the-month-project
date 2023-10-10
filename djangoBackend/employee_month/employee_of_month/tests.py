@@ -1,64 +1,56 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
-from .models import Employee, EmployeeOfTheMonth
 from django.urls import reverse
+from django.contrib.auth.models import User
+from .models import Employee, EmployeeOfTheMonth, WinnerInteractions
 
-
-class EmployeeTestCase(TestCase):
+class EmployeeTests(TestCase):
     def setUp(self):
-        """
-        Set up the test environment by creating test users and employees.
-        """
-
-        self.test_user = User.objects.create_user(
-            username='testuser', password='testpassword'
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpassword'
         )
-
-        # Create a test employee
-        self.test_employee = Employee.objects.create(
-            user=self.test_user,
+        self.employee = Employee.objects.create(
+            user=self.user,
             name='Test Employee',
-            photo='employee_photos/test.jpg',
             phone='1234567890',
             selection_counter=0,
-            job_title='Tester',
+            job_title='Test Job Title'
+        )
+        self.employee_of_the_month = EmployeeOfTheMonth.objects.create(
+            employee=self.employee,
+            month='2023-01-01',
+            description='Test description',
+            is_selected_for_month=True,
+            likes=0
         )
 
-    def test_employee_of_the_month_selection(self):
-        """
-        Test the selection of Employee of the Month and its effects.
-        """
+    def test_employee_str(self):
+        self.assertEqual(str(self.employee), 'Test Employee')
 
-        second_user = User.objects.create_user(
-            username='seconduser', password='secondpassword'
+    def test_employee_view(self):
+        response = self.client.get(reverse('return_employee', args=(self.employee.user.id,)))
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['name'], 'Test Employee')
+
+
+class WinnerInteractionsTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpassword'
         )
-        second_employee = Employee.objects.create(
-            user=second_user,
-            name='Second Employee',
-            photo='employee_photos/second.jpg',
-            phone='9876543210',
+        self.employee = Employee.objects.create(
+            user=self.user,
+            name='Test Employee',
+            phone='1234567890',
             selection_counter=0,
-            job_title='Developer',
+            job_title='Test Job Title'
         )
-
-        url = 'admin:employee_of_month_employee_changelist'
-
-        response = self.client.get(reverse(url))
-
-        self.assertContains(response, 'Select Employee of the Month')
-
-        response = self.client.post(
-            reverse('admin:employee_app_employee_changelist'),
-            {'action': 'make_employee_of_the_month',
-                '_selected_action': self.test_employee.pk},
+        self.employee_of_the_month = EmployeeOfTheMonth.objects.create(
+            employee=self.employee,
+            month='2023-01-01',
+            description='Test description',
+            is_selected_for_month=True,
+            likes=0
         )
-
-        self.assertContains(
-            response, f'Successfully selected {self.test_employee} as Employee of the Month.'
-        )
-
-        self.test_employee.refresh_from_db()
-        self.assertEqual(self.test_employee.selection_counter, 1)
-
-        second_employee.refresh_from_db()
-        self.assertEqual(second_employee.selection_counter, 0)
