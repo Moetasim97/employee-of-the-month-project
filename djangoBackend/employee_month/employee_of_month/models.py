@@ -4,6 +4,7 @@ from django.db import models
 import os
 import calendar
 
+
 def get_image_upload_path(instance, filename):
     return os.path.join('employee_photos', str(instance.id), filename)
 
@@ -41,6 +42,8 @@ class EmployeeOfTheMonthManager(models.Manager):
             selected_employee_of_month.save()
         else:
             pass
+
+        # I need to add code to handle the comments and the likes of the previous employee of the
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)  # Define the 'name' field
@@ -51,6 +54,14 @@ class Employee(models.Model):
 
     objects = EmployeeOfTheMonthManager()
     
+    # def save(self, *args, **kwargs):
+    #     # Set the 'name' field to the first and last name of the associated User
+    #     if self.user:
+    #         self.name = f"{self.user.first_name} {self.user.last_name}"
+    #     super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"
@@ -60,9 +71,17 @@ class EmployeeOfTheMonth(models.Model):
     month = models.DateField()
     description = models.TextField(blank=True)
     is_selected_for_month = models.BooleanField(default=False)
+    likes = models.IntegerField(null=True,default=0)
+    
 
     objects = EmployeeOfTheMonthManager()
 
     def __str__(self) -> str:
         month_name = calendar.month_name[self.month.month]
         return f"{month_name} {self.month.year} - {self.employee.user.get_full_name()}"
+    
+
+class WinnerInteractions(models.Model):
+    current_winner = models.ForeignKey('EmployeeOfTheMonth',on_delete=models.CASCADE)
+    commenter = models.ForeignKey('Employee',on_delete=models.CASCADE)
+    comment = models.CharField(max_length=255)

@@ -1,8 +1,10 @@
 from django.contrib import admin
-from .models import Employee, EmployeeOfTheMonth
+from django.contrib import admin
+from .models import Employee, EmployeeOfTheMonth,WinnerInteractions
 from django.contrib.auth.models import Group
 import calendar
 from admin_confirm.admin import AdminConfirmMixin, confirm_action
+
 
 
 admin.site.unregister(Group)
@@ -47,3 +49,5 @@ class EmployeeOfTheMonthAdmin(admin.ModelAdmin):
     def display_month(self, obj):
         return calendar.month_name[obj.month.month]
     display_month.short_description = 'Month'
+
+admin.site.register(WinnerInteractions)
