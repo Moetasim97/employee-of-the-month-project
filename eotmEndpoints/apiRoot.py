@@ -48,6 +48,19 @@ async def editing_emp_profile(employee_data:EmployeeData):
         else:
             return {"error": "Failed to edit employee data"}
         
+
+@app.get("/all_stars")
+async def getting_hall_of_famers():
+    async with httpx.AsyncClient() as client:
+        other_url ="http://127.0.0.1:8000/all_time_winners/"
+
+        response = await client.get(other_url)
+        if response.status_code==200:
+            return response.json()
+        else:
+
+            {"error":"Failed to fetch hall of famers."}
+        
 @app.get("/get_employee/{employee_id}",response_model=EmployeeDataOutput)
 async def getting_employee_data(employee_id:int):
 
