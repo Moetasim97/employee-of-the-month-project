@@ -19,10 +19,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ handleEndEdit }) => {
   const { user } = useAuthState() as { user: User };
   const [state, setState] = useState({
     name: user.name,
-    address: user.address,
-    title: user.title,
+    title: user.job_title,
     phone: user.phone,
-    profileImage: user.profileImage,
+    profileImage: user.phone,
   });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [event.target.name]: event.target.value });
@@ -38,11 +37,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ handleEndEdit }) => {
       value: state.title,
       name: "title",
     },
-    {
-      label: "Address",
-      value: state.address,
-      name: "address",
-    },
+
     {
       label: "Phone",
       value: state.phone,

@@ -16,7 +16,7 @@ import { User } from "types/User";
 interface AwardProfileCardProps {
   AwardIcon: SvgIconComponent;
   awardTitle?: string;
-  user: Pick<User, "name" | "profileImage" | "title" | "brief">;
+  user: Pick<User, "id" | "name" | "photo" | "phone" | "counter" | "job_title">;
   recognitions: number;
   actions?: React.ReactNode;
 }
@@ -49,11 +49,11 @@ const AwardProfileCard: React.FC<AwardProfileCardProps> = ({
             <Avatar
               alt={user.name}
               sx={{ width: 200, height: 200, m: 2 }}
-              src={user.profileImage}
+              src={user.photo}
             />
 
             <Typography variant="h6">
-              {user.title} | {user.name}
+              {user.job_title} | {user.name}
             </Typography>
             <Stack gap={2} direction={"row"} alignItems={"center"}>
               <Icon sx={{ color: goldColor }}>
@@ -61,7 +61,7 @@ const AwardProfileCard: React.FC<AwardProfileCardProps> = ({
               </Icon>
               <Typography>{recognitions} Recognitions</Typography>
             </Stack>
-            <Typography>{user.brief}</Typography>
+            <Typography>{user.phone}</Typography>
           </Stack>
         </CardContent>
         {actions && <CardActions>{actions}</CardActions>}

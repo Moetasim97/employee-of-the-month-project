@@ -9,21 +9,20 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { dummyUser } from "types/User";
 import { useAuthState } from "../../context/Auth";
 import ResetPasswordForm from "../ResetPasswordForm/ResetPasswordForm";
 
 const Login: React.FC = () => {
   const [state, setState] = useState({ email: "", password: "" });
   const [isResetPassword, setIsResetPassword] = useState(false);
-  const { login } = useAuthState();
+  // const { login } = useAuthState();
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    login(dummyUser);
+    // login(dummyUser);
   };
   if (isResetPassword) {
     return (
