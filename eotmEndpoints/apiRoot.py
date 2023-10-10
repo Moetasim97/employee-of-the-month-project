@@ -119,14 +119,21 @@ async def submit_current_interaction(interaction_data:dict):
     
     async with httpx.AsyncClient() as client:
         response = await client.post(other_url, json = interaction_data)
-        if response.status_code==200:
+        if response.status_code == 200:
             return response.json()
         else:
             return {"error":"Failed to submit new interactions with the eotm post."}
         
-@app.put("reset_password")
+@app.put("/reset_password")
 async def resetting_password(new_user_data:dict):
-    other_url = "http://127.0.0.1:8000/update_password/"
+    other_url = "http://127.0.0.1:8000/reset_pass/"
+
+    async with httpx.AsyncClient() as client:
+        response = await client.put(other_url,json=new_user_data)
+        if response.status_code==200:
+            return response.json()
+        else:
+            return {"error":"Failed to update user password"}
 
         
 
