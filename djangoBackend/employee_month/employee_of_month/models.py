@@ -42,6 +42,8 @@ class EmployeeOfTheMonthManager(models.Manager):
             selected_employee_of_month.save()
         else:
             pass
+
+        # I need to add code to handle the comments and the likes of the previous employee of the month
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)  # Define the 'name' field
