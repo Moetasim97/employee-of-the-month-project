@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.db.models import Avg
 from django.utils import timezone
 from django.forms.models import model_to_dict
-from .models import Employee,User,EmployeeOfTheMonth
+from .models import Employee,User,EmployeeOfTheMonth,WinnerInteractions
 import math
 import json
 from django.views.decorators.csrf import csrf_exempt
@@ -14,7 +14,10 @@ from django.views.decorators.csrf import csrf_exempt
 def validate_user(request):
     if request.method == "POST":
         user_data = json.loads(request.body.decode('utf-8'))
-        target_user = User.objects.filter(username = user_data['username'])
+        try:
+            target_user = User.objects.filter(username = user_data['username'])
+        except:
+             target_user = None
         if target_user:
             # if target_user.check_password(user_data['password']):
                 return JsonResponse(list(target_user.values('username','id'))[0],safe=False)
@@ -62,7 +65,7 @@ def retrieve_hofs(request):
      
 @csrf_exempt
 def edit_employee(request):
-     if request.method == "POST":
+     if request.method == "PUT":
           incoming_data = json.loads(request.body.decode('utf-8'))
           employee = Employee.objects.get(employee_id=incoming_data['id'])
           if employee:
@@ -81,6 +84,50 @@ def edit_employee(request):
           digestible_struct = after_employee
           return JsonResponse(digestible_struct)
          
+
+@csrf_exempt
+def record_interaction(request):
+     if request.method=="POST":
+        serialzed_comments = None
+        total_likes = None
+        request_body = json.loads(request.body.decode('utf-8'))
+        try:
+            commenter = Employee.objects.get(id=request_body['employee_id'])
+            current_eotm = EmployeeOfTheMonth.objects.get(is_selected_for_month=True)
+        except:
+            current_eotm = None
+            commenter = None
+        if request_body['comment'] and commenter and current_eotm:
+            new_interaction = WinnerInteractions(comment = request_body['comment'],commenter = commenter, current_winner = current_eotm)
+            new_interaction.save()
+            all_comments = WinnerInteractions.objects.filter(current_winner__employee__id=current_eotm.employee_id)
+            serialzed_comments = list(all_comments.values('comment'))
+        #    return serialzed_comments
+            
+        if request_body['likes']:
+                current_eotm.likes = current_eotm.likes+1
+                current_eotm.save()
+                total_likes = model_to_dict(current_eotm)['likes']
+        else:
+            total_likes = model_to_dict(current_eotm)['likes']
+            # return JsonResponse({"likes":total_likes})
+        if serialzed_comments and total_likes:
+                serialzed_comments.append(total_likes)
+                return JsonResponse(serialzed_comments,safe=False)
+        elif serialzed_comments:
+                return JsonResponse(serialzed_comments,safe=False)
+        elif total_likes:
+                return JsonResponse({'likes':total_likes})
+            
+               
+                 
+        
+     
+          
+          
+          
+     
+     
     
 
                

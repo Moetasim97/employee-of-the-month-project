@@ -17,6 +17,12 @@ class EmployeeData(BaseModel):
     photo:str | None = None
     phone:str | None = None
 
+class InteractionData(BaseModel):
+    employee_id: int
+    winner_id: int
+    comment: str
+    like: bool
+
 
 # class Car(BaseModel):
 #     car_name: str | None = None
@@ -67,7 +73,7 @@ async def get_employee_data(employee_id:int):
         if response.status_code == 200:
             return response.json()
         else:
-            return print(response)
+            return response.json()
 
     
 

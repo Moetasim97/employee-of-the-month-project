@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Employee, EmployeeOfTheMonth
+from .models import Employee, EmployeeOfTheMonth,WinnerInteractions
 
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ['user', 'counter', 'job_title']
@@ -20,3 +20,4 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 admin.site.register(EmployeeOfTheMonth)
 admin.site.register(Employee, EmployeeAdmin)
+admin.site.register(WinnerInteractions)

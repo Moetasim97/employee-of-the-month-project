@@ -43,7 +43,7 @@ class EmployeeOfTheMonthManager(models.Manager):
         else:
             pass
 
-        # I need to add code to handle the comments and the likes of the previous employee of the month
+        # I need to add code to handle the comments and the likes of the previous employee of the
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)  # Define the 'name' field
@@ -71,7 +71,7 @@ class EmployeeOfTheMonth(models.Model):
     month = models.DateField()
     description = models.TextField(blank=True)
     is_selected_for_month = models.BooleanField(default=False)
-    likes = models.IntegerField(null=True)
+    likes = models.IntegerField(null=True,default=0)
     
 
     objects = EmployeeOfTheMonthManager()
