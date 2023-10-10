@@ -123,6 +123,10 @@ async def submit_current_interaction(interaction_data:dict):
             return response.json()
         else:
             return {"error":"Failed to submit new interactions with the eotm post."}
+        
+@app.put("reset_password")
+async def resetting_password(new_user_data:dict):
+    other_url = "http://127.0.0.1:8000/update_password/"
 
         
 

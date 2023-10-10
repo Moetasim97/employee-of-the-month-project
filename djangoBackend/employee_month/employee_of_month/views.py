@@ -123,7 +123,12 @@ def record_interaction(request):
         
 @csrf_exempt
 def resetting_password(request):
-     pass
+     if request.method == "PUT":
+          new_credentials = json.loads(request.body.decode("utf-8"))
+          current_user = User.objects.get(username=new_credentials['username'])
+          current_user.set_password(str(new_credentials['password']))
+          current_user.save()
+          return JsonResponse({"message":"Password updated successfully"})
             
                
                  
