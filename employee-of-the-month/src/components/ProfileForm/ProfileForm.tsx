@@ -46,7 +46,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ handleEndEdit }) => {
   ];
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await fetch("http://127.0.0.1:8000/edit_employee/", {
+    await fetch("http://127.0.0.1:8001/edit_employee/", {
       method: "post",
       body: JSON.stringify({ id: user.id, ...state }),
     });

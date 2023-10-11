@@ -19,17 +19,14 @@ const CurrentWinnerCard: React.FC = () => {
   const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await fetch(
-        "http://127.0.0.1:8000/update_eotm_interactions/",
-        {
-          body: JSON.stringify({
-            employee_id: user?.id,
-            comment,
-            likes: isLiked,
-          }),
-          method: "post",
-        }
-      );
+      const res = await fetch("http://127.0.0.1:8001/submit_interaction", {
+        body: JSON.stringify({
+          employee_id: user?.id,
+          comment,
+          likes: isLiked,
+        }),
+        method: "post",
+      });
       const data = await res.json();
       setComments(data.slice(0, -1).map((entry: any) => entry.comment));
       setLikes(data.at(-1).likes);

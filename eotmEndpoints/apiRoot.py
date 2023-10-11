@@ -107,7 +107,7 @@ async def resetting_password(new_user_data: User):
         if response.status_code == 200:
             return response.json()
         else:
-            return {"error":"Failed to update user password"}
+            return {"error": "Failed to update user password"}
 
 
 @app.get("/logout")
@@ -118,12 +118,10 @@ async def logging_out():
     async with httpx.AsyncClient() as client:
         response = await client.get(other_url)
 
-        if response.status_code ==200:
+        if response.status_code == 200:
             return response.json()
         else:
-            return {"error":"Failed to logout from session"}
-
-        
+            return {"error": "Failed to logout from session"}
 
 
 if __name__ == "__main__":

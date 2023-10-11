@@ -28,7 +28,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   const handleResetPassword = async () => {
     setStatus("loading");
     try {
-      await fetch("http://127.0.0.1:8000/reset_pass/", {
+      await fetch("http://127.0.0.1:8001/reset_password", {
         method: "put",
         body: JSON.stringify({
           username: state.email,

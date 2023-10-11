@@ -1,4 +1,4 @@
-import { Email, Home, Phone } from "@mui/icons-material";
+import { Phone } from "@mui/icons-material";
 import {
   Avatar,
   Divider,
@@ -17,28 +17,18 @@ const ProfileInfo: React.FC<ProfileProps> = () => {
   if (!user) return <div>Not Authorized</div>;
 
   const contactUsItems = [
-    // {
-    //   label: "Email",
-    //   icon: <Email />,
-    //   value: user.email,
-    // },
     {
       label: "Phone",
       icon: <Phone />,
       value: user.phone,
     },
-    // {
-    //   label: "Address",
-    //   icon: <Home />,
-    //   value: user.address,
-    // },
   ];
   return (
     <Stack alignItems={"center"}>
       <Avatar
         alt={user.name}
         sx={{ width: 200, height: 200, m: 5 }}
-        src={user.photo}
+        src={"http://127.0.0.1:8000/" + user.photo}
       />
       <Typography variant={"h4"}>{user.name}</Typography>
       <Typography variant={"h5"}>{user.job_title}</Typography>

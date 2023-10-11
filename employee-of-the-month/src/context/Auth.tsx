@@ -16,7 +16,7 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const userId = localStorage.getItem("userId");
     if (userId) {
       const userResponse = await fetch(
-        `http://127.0.0.1:8000/return_employee/${userId}/`
+        `http://127.0.0.1:8001/get_employee/${userId}`
       );
       const user: User = await userResponse.json();
       setUser(user);
