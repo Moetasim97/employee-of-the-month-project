@@ -27,7 +27,7 @@ const HomeOverview: React.FC = () => {
   };
   const fetchEmployeeOfTheMonth = async (): Promise<void> => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/retrieve_winner/");
+      const response = await fetch("http://127.0.0.1:8001/current_eotm/");
       const data: User = await response.json();
       setEmployeeOfTheMonth(data);
     } catch (error) {

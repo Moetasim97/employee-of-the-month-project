@@ -8,7 +8,7 @@ import math
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth import login,logout
+from django.contrib.auth import login, logout
 
 
 # view that handles the login functionality
@@ -21,12 +21,12 @@ def validate_user(request):
         except:
             target_user = None
         if target_user:
-            if check_password(user_data['password'],target_user.password):
-                login(request,target_user)
-              
-                return JsonResponse({"username":target_user.username,"id":target_user.id,
-                                     "session_id":request.session.session_key})
-             
+            if check_password(user_data['password'], target_user.password):
+                login(request, target_user)
+
+                return JsonResponse({"username": target_user.username, "id": target_user.id,
+                                     "session_id": request.session.session_key})
+
             else:
                 return JsonResponse({"message": "The password is invalid"})
         else:
@@ -80,8 +80,8 @@ def edit_employee(request):
         employee = Employee.objects.get(id=incoming_data['id'])
         if employee:
 
-            if incoming_data['photo']:
-                employee.photo = incoming_data['photo']
+            # if incoming_data['photo']:
+            #     employee.photo = incoming_data['photo']
             if incoming_data['name']:
                 employee.name = incoming_data['name']
             if incoming_data['phone']:
@@ -156,9 +156,9 @@ def resetting_password(request):
 
 
 def logging_out(request):
-     logout(request)
-     request.session.clear()
-     return JsonResponse({"message":"Logout successful"})
+    logout(request)
+    request.session.clear()
+    return JsonResponse({"message": "Logout successful"})
 
 
 def home(request):

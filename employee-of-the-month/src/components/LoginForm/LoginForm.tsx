@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "../../context/Auth";
 import ResetPasswordForm from "../ResetPasswordForm/ResetPasswordForm";
 import { User } from "types/User";
@@ -37,11 +37,7 @@ const Login: React.FC = () => {
         }),
       });
       const data: User = await response.json();
-      const userResponse = await fetch(
-        `http://127.0.0.1:8000/return_employee/${data.id}/`
-      );
-      const user: User = await userResponse.json();
-      login(user);
+      await login(data.id);
     } catch (error) {
       setIsInvalid(true);
       console.error("Error fetching employee of the month:", error);
