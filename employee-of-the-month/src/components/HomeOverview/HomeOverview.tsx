@@ -42,7 +42,7 @@ const HomeOverview: React.FC = () => {
         user={employeeOfTheMonth}
         recognitions={employeeOfTheMonth.counter}
         awardTitle="Current Monthly Winner"
-        actions={user ? <CurrentWinnerCard isLiked={true} /> : null}
+        actions={user ? <CurrentWinnerCard /> : null}
       />
       <Card>
         <CardHeader title="All-time hall of fame" />
