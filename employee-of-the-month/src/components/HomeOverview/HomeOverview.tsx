@@ -1,19 +1,46 @@
 import { EmojiEvents, MilitaryTech } from "@mui/icons-material";
 import { Card, CardContent, CardHeader, Grid, Stack } from "@mui/material";
 import { useAuthState } from "context/Auth";
-import { dummyUser } from "types/User";
 import AwardProfileCard from "./AwardProfileCard/AwardProfileCard";
 import CurrentWinnerCard from "./AwardProfileCard/CurrentWinnerActions/CurrentWinnerActions";
+import { useEffect, useState } from "react";
+import { User } from "types/User";
 
-const topEmployees = [dummyUser, dummyUser, dummyUser, dummyUser, dummyUser];
 const HomeOverview: React.FC = () => {
   const { user } = useAuthState();
+  const [topEmployees, setTopEmployees] = useState<User[]>([]);
+  const [employeeOfTheMonth, setEmployeeOfTheMonth] = useState<User>();
+
+  useEffect(() => {
+    fetchTopEmployees();
+    fetchEmployeeOfTheMonth();
+  }, []);
+
+  const fetchTopEmployees = async (): Promise<void> => {
+    try {
+      const response = await fetch("http://127.0.0.1:8001/all_stars/");
+      const data: User[] = await response.json();
+      setTopEmployees(data);
+    } catch (error) {
+      console.error("Error fetching top employees:", error);
+    }
+  };
+  const fetchEmployeeOfTheMonth = async (): Promise<void> => {
+    try {
+      const response = await fetch("http://127.0.0.1:8001/current_eotm");
+      const data: User = await response.json();
+      setEmployeeOfTheMonth(data);
+    } catch (error) {
+      console.error("Error fetching employee of the month:", error);
+    }
+  };
+  if (!employeeOfTheMonth) return <p>loading ....</p>;
   return (
     <Stack gap={2}>
       <AwardProfileCard
         AwardIcon={MilitaryTech}
-        user={dummyUser}
-        recognitions={dummyUser.monthlyRecognitions}
+        user={employeeOfTheMonth}
+        recognitions={employeeOfTheMonth.counter}
         awardTitle="Current Monthly Winner"
         actions={user ? <CurrentWinnerCard isLiked={true} /> : null}
       />
@@ -26,7 +53,7 @@ const HomeOverview: React.FC = () => {
                 <AwardProfileCard
                   AwardIcon={EmojiEvents}
                   user={user}
-                  recognitions={user.totalRecognitions}
+                  recognitions={user.counter}
                 />
               </Grid>
             ))}

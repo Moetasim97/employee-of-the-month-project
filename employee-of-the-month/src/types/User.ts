@@ -9,6 +9,7 @@ export interface User {
   monthlyRecognitions: number;
   totalRecognitions: number;
   brief: string;
+  counter:number;
 }
 
 export const dummyUser: User = {
@@ -23,4 +24,5 @@ export const dummyUser: User = {
   totalRecognitions: 1000,
   monthlyRecognitions: 234,
   brief: "I am a software engineer",
+  counter:4
 };

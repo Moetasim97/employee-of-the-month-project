@@ -5,11 +5,14 @@ from io_pydantic_models import *
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
+
+origins =["http://localhost:3000","http://localhost:8000"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000/"],  # You can specify a list of allowed origins or use "*" for any origin.
+    allow_origins=origins,  # You can specify a list of allowed origins or use "*" for any origin.
     allow_credentials=True,  
- 
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 
