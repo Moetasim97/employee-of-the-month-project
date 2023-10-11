@@ -122,15 +122,15 @@ def record_interaction(request):
                 commenter.save()
                 current_eotm.likes = current_eotm.likes+1
                 current_eotm.save()
-                total_likes = {"likes":model_to_dict(current_eotm)['likes'],"commenter_name":commenter.name,"like_status":commenter.liked_eotm}
+                total_likes = {"likes":model_to_dict(current_eotm)['likes'],"commenter_name":commenter.name,"like_status":commenter.liked_eotm,"commenter_id":commenter.id}
         elif request_body['likes'] and commenter.liked_eotm:
             current_eotm.likes = current_eotm.likes-1
             commenter.liked_eotm=False
             commenter.save()
             current_eotm.save()
-            total_likes = {"likes":model_to_dict(current_eotm)['likes'],"commenter_name":commenter.name,"like_status":commenter.liked_eotm}
+            total_likes = {"likes":model_to_dict(current_eotm)['likes'],"commenter_name":commenter.name,"like_status":commenter.liked_eotm,"commenter_id":commenter.id}
         else:
-            total_likes = {"likes":model_to_dict(current_eotm)['likes'],"commenter_name":commenter.name,"like_status":commenter.liked_eotm}
+            total_likes = {"likes":model_to_dict(current_eotm)['likes'],"commenter_name":commenter.name,"like_status":commenter.liked_eotm,"commenter_id":commenter.id},
             
             # return JsonResponse({"likes":total_likes})
         if serialzed_comments and total_likes['likes']:
