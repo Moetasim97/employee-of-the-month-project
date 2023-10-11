@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException, Request
 import httpx
 from io_pydantic_models import *
 from fastapi.middleware.cors import CORSMiddleware
-app = FastAPI(port=8001)
+app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -130,6 +130,6 @@ async def resetting_password(new_user_data:User):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1")
+    uvicorn.run(app, host="127.0.0.1", port=8001)
 
 
