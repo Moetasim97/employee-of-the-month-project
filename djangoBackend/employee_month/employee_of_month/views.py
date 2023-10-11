@@ -117,15 +117,23 @@ def record_interaction(request):
             serialzed_comments = list(all_comments.values('comment'))
         #    return serialzed_comments
             
-        if request_body['likes']:
+        if request_body['likes'] and not commenter.liked_eotm:
+                commenter.liked_eotm=True
+                commenter.save()
                 current_eotm.likes = current_eotm.likes+1
                 current_eotm.save()
-                total_likes = {"likes":model_to_dict(current_eotm)['likes']}
+                total_likes = {"likes":model_to_dict(current_eotm)['likes'],"commenter_name":commenter.name,"like_status":commenter.liked_eotm}
+        elif request_body['likes'] and commenter.liked_eotm:
+            current_eotm.likes = current_eotm.likes-1
+            commenter.liked_eotm=False
+            commenter.save()
+            current_eotm.save()
+            total_likes = {"likes":model_to_dict(current_eotm)['likes'],"commenter_name":commenter.name,"like_status":commenter.liked_eotm}
         else:
-            total_likes = {"likes":model_to_dict(current_eotm)['likes']}
+            total_likes = {"likes":model_to_dict(current_eotm)['likes'],"commenter_name":commenter.name,"like_status":commenter.liked_eotm}
             
             # return JsonResponse({"likes":total_likes})
-        if serialzed_comments and total_likes:
+        if serialzed_comments and total_likes['likes']:
                 serialzed_comments.append(total_likes)
                 return JsonResponse(serialzed_comments,safe=False)
         elif serialzed_comments:
@@ -143,6 +151,11 @@ def resetting_password(request):
           return JsonResponse({"message":"Password updated successfully"})
             
                
+
+def logout(request):
+     logout(request)
+     request.session.clear()
+     return JsonResponse({"message":"Logout successfull"})
 
 
 def home(request):
