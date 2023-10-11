@@ -6,6 +6,17 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 
+origins = ["http://localhost:3000", "http://localhost:8000"]
+app.add_middleware(
+    CORSMiddleware,
+    # You can specify a list of allowed origins or use "*" for any origin.
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+
 @app.get('/')
 def home():
     return {"message": "Say hello to my little friend"}

@@ -51,6 +51,7 @@ class Employee(models.Model):
     phone = models.CharField(max_length=11)
     selection_counter = models.PositiveIntegerField(default=0)
     job_title = models.CharField(max_length=255)
+    liked_eotm = models.BooleanField(default=False)
 
     objects = EmployeeOfTheMonthManager()
     
