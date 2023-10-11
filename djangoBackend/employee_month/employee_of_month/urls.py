@@ -11,7 +11,7 @@ urlpatterns = [
     path('update_eotm_interactions/',views.record_interaction,name='updated_interactions'),
     path('reset_pass/',views.resetting_password),
     path('record_interaction/', views.record_interaction, name='record_interaction'),
-    path('logout_from_session/',views.logout),
+    path('logout_from_session/',views.logging_out),
 
 ]
 

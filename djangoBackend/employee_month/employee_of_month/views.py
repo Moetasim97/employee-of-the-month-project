@@ -8,7 +8,7 @@ import math
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth import login
+from django.contrib.auth import login,logout
 
 
 # view that handles the login functionality
@@ -23,7 +23,7 @@ def validate_user(request):
         if target_user:
             if check_password(user_data['password'],target_user.password):
                 login(request,target_user)
-
+              
                 return JsonResponse({"username":target_user.username,"id":target_user.id,
                                      "session_id":request.session.session_key})
              
@@ -152,10 +152,10 @@ def resetting_password(request):
             
                
 
-def logout(request):
+def logging_out(request):
      logout(request)
      request.session.clear()
-     return JsonResponse({"message":"Logout successfull"})
+     return JsonResponse({"message":"Logout successful"})
 
 
 def home(request):
