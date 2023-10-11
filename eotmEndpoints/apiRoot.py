@@ -2,7 +2,8 @@ import json
 from fastapi import FastAPI, HTTPException, Request
 import httpx
 from io_pydantic_models import *
-app = FastAPI(port=8001)
+from fastapi.middleware.cors import CORSMiddleware
+app = FastAPI()
 
 
 @app.get('/')
