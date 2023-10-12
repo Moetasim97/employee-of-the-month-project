@@ -1,0 +1,48 @@
+# Virtual Environment
+venv/
+
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Database
+*.sqlite3
+
+# Media and static files
+media/
+static/
+
+# IDE/Editor Files
+.idea/
+.vscode/
+
+# Logs and generated files
+logs/
+*.log
+*.db
+*.sqlite
+
+# Dependency and build files
+*.egg-info/
+dist/
+build/
+.eggs/
+__pycache/
+.cache/
+
+
+
+# Secrets and config files
+.env
+
+# Compiled files
+*.pyc
+*.pyo
+
+# Django Secret Key
+
+
+
+
+
+
