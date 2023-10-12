@@ -14,4 +14,3 @@ urlpatterns = [
     path('logout_from_session/',views.logging_out),
 
 ]
-

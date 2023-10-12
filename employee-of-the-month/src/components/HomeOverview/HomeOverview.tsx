@@ -18,7 +18,7 @@ const HomeOverview: React.FC = () => {
 
   const fetchTopEmployees = async (): Promise<void> => {
     try {
-      const response = await fetch("http://127.0.0.1:8001/all_stars/");
+      const response = await fetch("http://127.0.0.1:8001/all_stars");
       const data: User[] = await response.json();
       setTopEmployees(data);
     } catch (error) {
@@ -27,7 +27,7 @@ const HomeOverview: React.FC = () => {
   };
   const fetchEmployeeOfTheMonth = async (): Promise<void> => {
     try {
-      const response = await fetch("http://127.0.0.1:8001/current_eotm");
+      const response = await fetch("http://127.0.0.1:8001/current_eotm/");
       const data: User = await response.json();
       setEmployeeOfTheMonth(data);
     } catch (error) {
@@ -42,7 +42,7 @@ const HomeOverview: React.FC = () => {
         user={employeeOfTheMonth}
         recognitions={employeeOfTheMonth.counter}
         awardTitle="Current Monthly Winner"
-        actions={user ? <CurrentWinnerCard isLiked={true} /> : null}
+        actions={user ? <CurrentWinnerCard /> : null}
       />
       <Card>
         <CardHeader title="All-time hall of fame" />

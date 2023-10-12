@@ -4,26 +4,45 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  CircularProgress,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
-import { dummyUser } from "types/User";
+import React, { useEffect, useState } from "react";
 import { useAuthState } from "../../context/Auth";
 import ResetPasswordForm from "../ResetPasswordForm/ResetPasswordForm";
+import { User } from "types/User";
 
 const Login: React.FC = () => {
   const [state, setState] = useState({ email: "", password: "" });
   const [isResetPassword, setIsResetPassword] = useState(false);
   const { login } = useAuthState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    login(dummyUser);
+    setIsLoading(true);
+    setIsInvalid(false);
+    try {
+      const response = await fetch("http://127.0.0.1:8001/validate_user/", {
+        method: "post",
+        body: JSON.stringify({
+          username: state.email,
+          password: state.password,
+        }),
+      });
+      const data: User = await response.json();
+      await login(data.id);
+    } catch (error) {
+      setIsInvalid(true);
+      console.error("Error fetching employee of the month:", error);
+    }
+    setIsLoading(false);
   };
   if (isResetPassword) {
     return (
@@ -33,6 +52,7 @@ const Login: React.FC = () => {
       />
     );
   }
+
   return (
     <Card component={"form"} onSubmit={handleSubmit}>
       <CardHeader title="Login" />
@@ -63,9 +83,16 @@ const Login: React.FC = () => {
         </Stack>
       </CardContent>
       <CardActions>
-        <Button type="submit" color="primary" fullWidth>
+        <Button
+          type="submit"
+          color="primary"
+          fullWidth
+          disabled={isLoading}
+          startIcon={isLoading ? <CircularProgress size={10} /> : null}
+        >
           Login
         </Button>
+        {isInvalid && <Typography>Invalid Credentials</Typography>}
       </CardActions>
     </Card>
   );

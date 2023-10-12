@@ -88,7 +88,8 @@ JAZZMIN_SETTINGS = {
     "welcome_sign": "Welcome to the Employee Admin Panel",
     "search_model": ["auth.User"],
     "topmenu_links": [
-        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Home", "url": "admin:index",
+            "permissions": ["auth.view_user"]},
         {"model": "auth.User"},
     ],
     "icons": {
@@ -97,8 +98,8 @@ JAZZMIN_SETTINGS = {
         "employee_of_month.employeeofthemonth": "fas fa-award",
         "employee_of_month.employee": "fas fa-users",
     },
-    "custom_js":"common/js/main.js",
-    "custom_css":"common/css/main.css",
+    "custom_js": "common/js/main.js",
+    "custom_css": "common/css/main.css",
 }
 
 JAZZMIN_UI_TWEAKS = {
@@ -111,20 +112,29 @@ JAZZMIN_UI_TWEAKS = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-env = environ.Env()
-environ.Env.read_env()
+# env = environ.Env()
+# environ.Env.read_env()
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': env("DB_NAME"),
+#         'USER': env("DB_USER"),
+#         'PASSWORD': env("DB_PASSWORD"),
+#         'HOST': env("DB_HOST"),
+#         'PORT': '',
+#         'ATOMIC_REQUESTS': True,
+#     }
+# }
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"),
-        'PASSWORD': env("DB_PASSWORD"),
-        'HOST': env("DB_HOST"),
-        'PORT': '',
-        'ATOMIC_REQUESTS': True,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+
     }
+
 }
 
 

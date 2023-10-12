@@ -9,20 +9,19 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import { useAuthState } from "../../context/Auth";
-import { User } from "../../types/User";
+import { useAuthLoggedInUser, useAuthState } from "../../context/Auth";
 
 interface ProfileFormProps {
   handleEndEdit: () => void;
 }
 const ProfileForm: React.FC<ProfileFormProps> = ({ handleEndEdit }) => {
-  const { user } = useAuthState() as { user: User };
+  const { loadUserData } = useAuthState();
+  const user = useAuthLoggedInUser();
   const [state, setState] = useState({
     name: user.name,
-    address: user.address,
-    title: user.title,
+    title: user.job_title,
     phone: user.phone,
-    profileImage: user.profileImage,
+    profileImage: user.phone,
   });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [event.target.name]: event.target.value });
@@ -38,19 +37,24 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ handleEndEdit }) => {
       value: state.title,
       name: "title",
     },
-    {
-      label: "Address",
-      value: state.address,
-      name: "address",
-    },
+
     {
       label: "Phone",
       value: state.phone,
       name: "phone",
     },
   ];
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await fetch("http://127.0.0.1:8001/edit_employee/", {
+      method: "post",
+      body: JSON.stringify({ id: user.id, ...state }),
+    });
+    await loadUserData();
+  };
+
   return (
-    <Card>
+    <Card component={"form"} onSubmit={handleSubmit}>
       <CardHeader
         title="Edit Profile"
         action={
@@ -75,7 +79,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ handleEndEdit }) => {
         </Grid>
       </CardContent>
       <CardActions sx={{ justifyContent: "flex-end" }}>
-        <Button startIcon={<Save />}>Save</Button>
+        <Button type={"submit"} startIcon={<Save />}>
+          Save
+        </Button>
       </CardActions>
     </Card>
   );
