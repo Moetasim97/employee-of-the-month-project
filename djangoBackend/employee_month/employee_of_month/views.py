@@ -108,6 +108,7 @@ def record_interaction(request):
         except:
             current_eotm = None
             commenter = None
+            raise ValueError("No employee of the month or no em")
         if request_body['comment'] and commenter and current_eotm:
             new_interaction = WinnerInteractions(
                 comment=request_body['comment'], commenter=commenter, current_winner=current_eotm)
