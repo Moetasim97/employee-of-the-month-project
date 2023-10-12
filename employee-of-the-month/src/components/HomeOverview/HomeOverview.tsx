@@ -18,7 +18,7 @@ const HomeOverview: React.FC = () => {
 
   const fetchTopEmployees = async (): Promise<void> => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/all_time_winners/");
+      const response = await fetch("http://127.0.0.1:8001/all_stars");
       const data: User[] = await response.json();
       setTopEmployees(data);
     } catch (error) {

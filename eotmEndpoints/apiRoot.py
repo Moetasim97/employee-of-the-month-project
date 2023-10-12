@@ -62,6 +62,23 @@ async def getting_employee_data(employee_id: int):
             return response.json()
 
 
+@app.get("/all_stars")
+async def getting_hall_of_famers():
+
+    async with httpx.AsyncClient() as client:
+
+        other_url = "http://127.0.0.1:8000/all_time_winners/"
+
+        response = await client.get(other_url)
+
+        if response.status_code == 200:
+
+            return response.json()
+
+        else:
+
+            {"error": "Failed to fetch hall of famers."}
+
 # @app.get("/star_employee")
 # async def get_star_employee():
 
