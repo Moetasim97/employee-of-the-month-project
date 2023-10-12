@@ -9,6 +9,7 @@ class User(BaseModel):
 class User_Validation_Output(BaseModel):
     username:str
     id:int
+    session_id:str
 
 
 
