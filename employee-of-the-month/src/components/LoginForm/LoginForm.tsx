@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     setIsLoading(true);
     setIsInvalid(false);
     try {
-      const response = await fetch("http://127.0.0.1:8001/validate_user/", {
+      const response = await fetch("http://127.0.0.1:8000/validate_user/", {
         method: "post",
         body: JSON.stringify({
           username: state.email,
