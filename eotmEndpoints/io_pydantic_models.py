@@ -20,8 +20,9 @@ class EmployeeData(BaseModel):
 
 class EmployeeDataOutput(EmployeeData):
     user:int
-    counter:int
+    selection_counter:int
     job_title:str
+    liked_eotm:bool
 
 class InteractionData(BaseModel):
     employee_id: int

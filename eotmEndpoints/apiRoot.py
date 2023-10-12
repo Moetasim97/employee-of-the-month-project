@@ -49,7 +49,7 @@ async def editing_emp_profile(employee_data: EmployeeData):
             return {"error": "Failed to edit employee data"}
 
 
-@app.get("/get_employee/{employee_id}")
+@app.get("/get_employee/{employee_id}",response_model=EmployeeDataOutput)
 async def getting_employee_data(employee_id: int):
 
     # other_url ='http://127.0.0.1:8000/return_employee/'
