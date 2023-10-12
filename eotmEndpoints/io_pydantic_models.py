@@ -40,5 +40,5 @@ class Employee_of_the_month_output(BaseModel):
 
 class ReturnedInteractions(BaseModel):
     comments:list[dict]
-    likes:int
+    meta_data:list[dict]
 

@@ -133,12 +133,12 @@ def record_interaction(request):
             total_likes = {"likes":model_to_dict(current_eotm)['likes'],"commenter_name":commenter.name,"like_status":commenter.liked_eotm,"commenter_id":commenter.id},
             
             # return JsonResponse({"likes":total_likes})
-        if serialzed_comments and total_likes['likes']:
+        if serialzed_comments and total_likes:
                 serialzed_comments.append(total_likes)
                 return JsonResponse(serialzed_comments,safe=False)
-        elif serialzed_comments:
+        elif serialzed_comments and not total_likes:
                 return JsonResponse(serialzed_comments,safe=False)
-        elif total_likes:
+        elif total_likes and not serialzed_comments:
                 return JsonResponse({'likes':total_likes})
         
 @csrf_exempt
